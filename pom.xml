@@ -10,15 +10,12 @@
   <packaging>war</packaging>
 
   <name>qiling_web Maven Webapp</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
-
   <properties>
-
     <!--指定所有依赖的版本号-->
     <!-- mybatis版本号 -->
     <mybatis.version>3.4.6</mybatis.version>
-    <jackson.version>2.5.4</jackson.version>
+    <jackson.version>2.7.9.4</jackson.version>
     <spring-version>4.3.9.RELEASE</spring-version>
     <servlet-api>3.1.0</servlet-api>
     <hibernate>5.0.4.Final</hibernate>
