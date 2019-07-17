@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+	      http://www.springframework.org/schema/beans
+		  http://www.springframework.org/schema/beans/spring-beans.xsd
+		  http://www.springframework.org/schema/context
+		  http://www.springframework.org/schema/context/spring-context.xsd
+		  http://www.springframework.org/schema/aop
+		  http://www.springframework.org/schema/aop/spring-aop.xsd
+		  http://www.springframework.org/schema/tx
+		  http://www.springframework.org/schema/tx/spring-tx.xsd
+		  http://www.springframework.org/schema/mvc
+		  http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--0.启动Controller 层 的注解 ；-->
+    <mvc:annotation-driven/>
+
+    <!--1.配置service 包扫描路径： -->
+    <context:component-scan base-package="com.sz.haisi"/>
+
+    <!--2.引入外部的配置属性文件；-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--3.配置阿里巴巴的数据源；-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.user}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+<!--
+    &lt;!&ndash;4.配置mybatis的sqlSessionFactory&ndash;&gt;
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        &lt;!&ndash;注入一个dataSource&ndash;&gt;
+        <property name="dataSource" ref="dataSource"/>
+
+        &lt;!&ndash;加载所有mapper映射文件； &ndash;&gt;
+        <property name="mapperLocations" value="classpath:com/sz/haisi/mapper/*.xml"/>
+
+
+        &lt;!&ndash;统一配置实体类的别名；&ndash;&gt;
+        <property name="typeAliasesPackage" value="com.sz.haisi.model"/>
+        &lt;!&ndash;加载mybatis核心配置文件，主要用来打印输出sql: 日志；&ndash;&gt;
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+
+        &lt;!&ndash;配置mybatis的分页插件；&ndash;&gt;
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
+
+    </bean>
+
+    &lt;!&ndash;5.配置mybatis 所有接口包扫描路径 ；&ndash;&gt;
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        &lt;!&ndash;配置mybatis 所有接口包扫描路径 ；&ndash;&gt;
+        <property name="basePackage" value="com.sz.haisi.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+-->
+
+
+
+    <!-- 配置会话工厂sessionFactory-->
+    <bean id="sessionFactory"   class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <!-- MySQL的方言 org.hibernate.dialect.MySQL5Dialect-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="javax.persistence.validation.mode">none</prop>
+                <!-- 必要时在数据库新建所有表 -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <!-- 配置current session的上下文环境，方便我们调用sessionFactory获取当前线程统一个session对象 -->
+                <prop key="current_session_context_class">thread</prop>
+                <!-- 用更漂亮的格式显示sql语句-->
+                <prop key="hibernate.format_sql">false</prop>
+            </props>
+        </property>
+
+
+        <!-- 引入映射的配置文件 -->
+        <property name="mappingLocations">
+            <array>
+                <!-- 加载实体类映射文件： -->
+                <value>classpath:mapper/*.hbm.xml</value>
+            </array>
+        </property>
+        <!--
+        使用注解 的时候需要用到；所有的类注解配置都会被扫描
+        <property name="packagesToScan" value="com.sz.haishi.model" />
+        -->
+
+        <!-- 加载Hibernate的核心配置文件, 因为已经集成了spring,所以不需要Hibernate的核心配置文件了。
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        -->
+    </bean>
+
+    <!--6.配置视图解析器；-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--前缀-->
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <!--后缀-->
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+
+</beans>

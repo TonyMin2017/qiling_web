@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间规则：统一约定配置为接口全路径；-->
+<mapper namespace="com.sz.haisi.dao.ProvinceDao">
+    <!--查询所有的省的 名称；-->
+    <select id="getAllProvince" resultType="Province">
+        select * from t_province
+    </select>
+
+</mapper>

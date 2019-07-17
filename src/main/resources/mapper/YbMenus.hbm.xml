@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<!-- 实体类与数据库中的表的一一映射 -->
+
+    <class name="com.sz.haisi.model.MyMenu" table="t_menu">
+            <id name="mid" column="mid" type="int">
+               <!-- 实体类中的gid， 对应数据库表yb_log中的字段名 gid -->
+                <generator class="native"></generator>
+            </id>
+        <!-- 其它的属性对应数据库表的其它的字段名 -->
+        <property name="mname" column="mname" type="java.lang.String"/>
+        <property name="pid" column="pid" type="java.lang.Integer"/>
+
+       <!--   .... -->
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间规则：统一约定配置为接口全路径；-->
+<mapper namespace="com.sz.haisi.dao.CityDao">
+
+    <!--查询所有的城市，及所在的省；-->
+    <select id="getAllCityAndProvinceBySearch" parameterType="City"  resultType="City">
+        SELECT p.pid,p.`pname`, c.`cid`, c.`cname`
+          FROM t_province p ,  t_city c
+          WHERE p.`pid` = c.`pid`
+
+              <!--动态sql方法； -->
+
+              <if test="cname!=null">
+                  AND c.cname LIKE '%${cname}%'
+              </if>
+
+              <if test="pname!=null">
+                  AND p.`pname` LIKE '%${pname}%'
+              </if>
+
+        </select>
+
+
+        <!--查询所有的城市 名称；-->
+    <select id="getAll" resultType="City">
+        SELECT p.pid,p.`pname`, c.`cid`, c.`cname`  FROM t_province p ,  t_city c WHERE p.`pid` = c.`pid`
+    </select>
+
+    <!--查询一个城市 ；-->
+    <select id="getCityByCid" parameterType="int" resultType="City">
+        select * from t_city where cid=#{cid}
+    </select>
+
+    <!--增加一个城市 ；-->
+    <insert id="addCity" parameterType="City">
+        insert into t_city (cname,pid) values (#{cname},#{pid})
+    </insert>
+
+    <!--修改城市 ；-->
+    <update id="updateCity" parameterType="City">
+        update t_city set cname=#{cname}, pid=#{pid} where cid=#{cid}
+    </update>
+
+    <!--单个 删除城市 ；-->
+    <delete id="deleteCity" parameterType="int">
+        delete from t_city where cid=#{cid}
+    </delete>
+
+    <!--批量删除城市 ；传入的参数是一个int [] ; -->
+    <delete id="deleteCitys" parameterType="java.util.Arrays">
+        delete from t_city where cid in
+        <foreach collection="array" open="("  item="cid" close=")" separator=",">
+            #{cid}
+        </foreach>
+    </delete>
+
+</mapper>
