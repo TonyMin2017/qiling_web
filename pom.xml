@@ -18,7 +18,7 @@
     <jackson.version>2.8.11</jackson.version>
     <spring-version>4.3.9.RELEASE</spring-version>
     <servlet-api>3.1.0</servlet-api>
-    <hibernate>5.0.4.Final</hibernate>
+    <hibernate>5.3.20.Final</hibernate>
     <aspectjrt>1.8.6</aspectjrt>
     <druid>1.0.15</druid>
     <servlet-api>3.1.0</servlet-api>
